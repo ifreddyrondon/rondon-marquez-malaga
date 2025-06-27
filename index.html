@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conoce a los Inquilinos Ideales: Familia Rondon–Marquez</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+                        'serif': ['Georgia', 'serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-in-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+                .hero-bg {
+            position: relative;
+            overflow: hidden;
+            /* Fallback background original */
+            background-image: linear-gradient(rgba(34, 197, 94, 0.15), rgba(255, 255, 255, 0.75)), url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: optimize-contrast;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: -2;
+        }
+
+        .hero-bg.images-loaded::before {
+            opacity: 1;
+            background-image: url('images/home_1.jpg');
+            animation: heroSlideshow 15s infinite;
+        }
+
+        /* Asegurar que no haya parpadeo en la primera carga */
+        .hero-bg::before {
+            animation-fill-mode: forwards;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(34, 197, 94, 0.15), rgba(255, 255, 255, 0.75));
+            backdrop-filter: blur(1px);
+            z-index: -1;
+        }
+
+        @keyframes heroSlideshow {
+            0%, 33.33% {
+                background-image: url('images/home_1.jpg');
+            }
+            33.34%, 66.66% {
+                background-image: url('images/home_6.jpg');
+            }
+            66.67%, 100% {
+                background-image: url('images/home_7.jpg');
+            }
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .badge-glass:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow:
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        .gallery-image {
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center text-center px-4">
+        <!-- Indicador de carga de imágenes -->
+        <div id="hero-loading" class="absolute bottom-8 left-8 z-10 hidden sm:block">
+            <div class="badge-glass rounded-xl px-4 py-2 text-xs text-gray-900">
+                <span class="flex items-center">
+                    <div class="w-2 h-2 bg-yellow-600 rounded-full mr-2 animate-pulse"></div>
+                    Cargando imágenes...
+                </span>
+            </div>
+        </div>
+
+        <!-- Indicador de slideshow de fondo -->
+        <div id="hero-loaded" class="absolute bottom-8 left-8 z-10 hidden sm:block" style="display: none;">
+            <div class="badge-glass rounded-xl px-4 py-2 text-xs text-gray-900">
+                <span class="flex items-center">
+                    <div class="w-2 h-2 bg-green-600 rounded-full mr-2 animate-pulse"></div>
+                    Nuestra casa en Santiago
+                </span>
+            </div>
+        </div>
+
+        <div class="max-w-4xl mx-auto animate-fade-in">
+            <!-- Badges de credibilidad -->
+            <div class="flex flex-wrap justify-center gap-4 mb-6">
+                <span class="badge-glass text-green-900 px-5 py-3 rounded-2xl text-sm font-semibold tracking-wide">✓ Verificados</span>
+                <span class="badge-glass text-blue-900 px-5 py-3 rounded-2xl text-sm font-semibold tracking-wide">✓ Referencias Disponibles</span>
+                <span class="badge-glass text-amber-900 px-5 py-3 rounded-2xl text-sm font-semibold tracking-wide">✓ Propietarios Actuales</span>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                Conoce a los Inquilinos Ideales:<br>
+                <span class="text-green-800">Familia Rondon–Marquez</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 mb-4 font-serif">
+                De Santiago de Chile a Málaga: buscamos un hogar de larga temporada
+            </p>
+
+            <!-- Propuesta de valor única -->
+            <div class="liquid-glass rounded-xl p-6 mb-8 max-w-2xl mx-auto">
+                <p class="text-lg text-gray-900 font-semibold mb-2">🏆 Por qué somos diferentes:</p>
+                <p class="text-gray-800">Ingresos en USD de empresas internacionales + Experiencia como propietarios responsables + Contacto local para facilitar todo el proceso</p>
+            </div>
+
+            <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                <a href="#about" class="inline-block bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-green-300">
+                    Ver nuestro perfil completo
+                </a>
+                <a href="#contacto" class="inline-block border-2 border-green-600 text-green-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 hover:text-white transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-green-300">
+                    Contactar ahora
+                </a>
+            </div>
+        </div>
+    </section>
+
+         <!-- Sobre Nosotros -->
+     <section id="about" class="py-16 px-4 bg-green-50">
+         <div class="max-w-6xl mx-auto">
+             <h2 class="text-4xl font-bold text-center text-green-800 mb-4">Nuestro Perfil Profesional</h2>
+             <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto font-serif">
+                 Una familia profesional, estable y comprometida, lista para cuidar su propiedad como si fuera nuestra.
+             </p>
+
+             <!-- Estadísticas de credibilidad -->
+             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
+                 <div class="bg-white rounded-lg p-4 text-center shadow-md">
+                     <div class="text-2xl font-bold text-green-800">5+</div>
+                     <div class="text-sm text-gray-600">Años como propietarios</div>
+                 </div>
+                 <div class="bg-white rounded-lg p-4 text-center shadow-md">
+                     <div class="text-2xl font-bold text-blue-800">3</div>
+                     <div class="text-sm text-gray-600">Profesionales estables</div>
+                 </div>
+                 <div class="bg-white rounded-lg p-4 text-center shadow-md">
+                     <div class="text-2xl font-bold text-purple-800">100%</div>
+                     <div class="text-sm text-gray-600">Pagos puntuales</div>
+                 </div>
+                 <div class="bg-white rounded-lg p-4 text-center shadow-md">
+                     <div class="text-2xl font-bold text-yellow-800">0</div>
+                     <div class="text-sm text-gray-600">Problemas reportados</div>
+                 </div>
+             </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                 <!-- Freddy Rondon -->
+                 <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300 animate-fade-in">
+                     <div class="w-24 h-24 mx-auto mb-4 relative">
+                         <img src="images/freddy rondon.jpeg" alt="Freddy Rondon - Ingeniero de Sistemas" class="w-24 h-24 rounded-full object-cover border-4 border-green-100 shadow-lg" loading="lazy">
+                         <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center border-2 border-white">
+                             <span class="text-sm">💼</span>
+                         </div>
+                     </div>
+                     <h3 class="text-xl font-semibold text-gray-900 mb-2 flex items-center justify-center">
+                         <span class="text-green-600 mr-2">👨‍💻</span>
+                         Freddy Rondon
+                     </h3>
+                     <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                         Ingeniero de Sistemas en <strong>Coinbase (NASDAQ)</strong>. Estabilidad financiera internacional garantizada.
+                     </p>
+                     <!-- Badges de verificación -->
+                     <div class="flex justify-center space-x-1 mb-3">
+                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">USD Income</span>
+                         <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">Tech Senior</span>
+                     </div>
+
+                     <!-- Enlaces profesionales -->
+                     <div class="flex flex-col space-y-2">
+                         <a href="https://www.linkedin.com/in/ifreddyrondon/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"/>
+                             </svg>
+                             LinkedIn
+                         </a>
+                         <a href="https://www.coinbase.com/es-la" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white text-xs font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"/>
+                             </svg>
+                             Coinbase
+                         </a>
+                     </div>
+                 </div>
+
+                                 <!-- Marianny Márquez -->
+                 <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300 animate-fade-in">
+                     <div class="w-24 h-24 mx-auto mb-4 relative">
+                         <img src="images/marianny marquez.jpeg" alt="Marianny Márquez - Arquitecta" class="w-24 h-24 rounded-full object-cover border-4 border-green-100 shadow-lg" loading="lazy">
+                         <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center border-2 border-white">
+                             <span class="text-sm">🏛️</span>
+                         </div>
+                     </div>
+                     <h3 class="text-xl font-semibold text-gray-900 mb-2 flex items-center justify-center">
+                         <span class="text-green-600 mr-2">👩‍🎨</span>
+                         Marianny Márquez
+                     </h3>
+                     <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                         Arquitecta en <strong>3G Office</strong>. Experta en diseño y espacios bien cuidados.
+                     </p>
+                     <div class="flex justify-center space-x-1 mb-3">
+                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">International</span>
+                         <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">Design Expert</span>
+                     </div>
+
+                     <!-- Enlaces profesionales -->
+                     <div class="flex flex-col space-y-2">
+                         <a href="https://www.linkedin.com/in/marianny-liliana-m%C3%A1rquez-rivas-a5582485/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"/>
+                             </svg>
+                             LinkedIn
+                         </a>
+                         <a href="https://www.3goffice.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white text-xs font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"/>
+                             </svg>
+                             3G Office
+                         </a>
+                     </div>
+                 </div>
+
+                 <!-- Eddy Amaya -->
+                 <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300 animate-fade-in">
+                     <div class="w-24 h-24 mx-auto mb-4 relative">
+                         <img src="images/eddy amaya.jpeg" alt="Eddy Amaya - Arquitecto" class="w-24 h-24 rounded-full object-cover border-4 border-green-100 shadow-lg" loading="lazy">
+                         <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center border-2 border-white">
+                             <span class="text-sm">🏗️</span>
+                         </div>
+                     </div>
+                     <h3 class="text-xl font-semibold text-gray-900 mb-2 flex items-center justify-center">
+                         <span class="text-green-600 mr-2">👨‍🏗️</span>
+                         Eddy Amaya
+                     </h3>
+                     <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                         Arquitecto en <strong>Molinari Arquitectos Asociados</strong>. Especialista en proyectos inmobiliarios y corporativos.
+                     </p>
+                     <div class="flex justify-center space-x-1 mb-3">
+                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Arquitecto</span>
+                         <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Design Expert</span>
+                     </div>
+
+                     <!-- Enlaces profesionales -->
+                     <div class="flex flex-col space-y-2">
+                         <a href="https://www.linkedin.com/in/eddy-amaya-b10941a7/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"/>
+                             </svg>
+                             LinkedIn
+                         </a>
+                         <a href="https://molinari.cl/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white text-xs font-medium rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                 <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"/>
+                             </svg>
+                             Molinari Arquitectos
+                         </a>
+                     </div>
+                 </div>
+
+                                 <!-- Tobias Rondon -->
+                 <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300 animate-fade-in">
+                     <div class="w-24 h-24 mx-auto mb-4 relative">
+                         <img src="images/tobias rondon.jpeg" alt="Tobias Rondon - Nuestro hijo de 2 años" class="w-24 h-24 rounded-full object-cover border-4 border-yellow-100 shadow-lg" loading="lazy">
+                         <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center border-2 border-white">
+                             <span class="text-sm">🧸</span>
+                         </div>
+                     </div>
+                     <h3 class="text-xl font-semibold text-gray-900 mb-2 flex items-center justify-center">
+                         <span class="text-yellow-600 mr-2">👶</span>
+                         Tobias Rondon
+                     </h3>
+                     <p class="text-gray-600 text-sm leading-relaxed mb-3">
+                         Nuestro hijo, 2 años. Alegre, curioso y el centro de nuestro mundo.
+                     </p>
+                     <div class="flex justify-center space-x-1">
+                         <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">2 años</span>
+                         <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">Nuestro tesoro</span>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuestro Hogar Actual -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Nuestro Hogar Actual</h2>
+
+            <div class="md:flex gap-12 items-center">
+                <!-- Texto -->
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-6">Casa Propia en Santiago</h3>
+                    <div class="space-y-4 text-gray-600 font-serif leading-relaxed">
+                        <p>
+                            <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-semibold mr-2">200 m²</span>
+                            Propietarios de una amplia casa con espacios verdes cuidadosamente diseñados.
+                        </p>
+                        <p>
+                            <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-semibold mr-2">Paisajismo</span>
+                            Pasión por crear y mantener jardines como pequeños parques privados.
+                        </p>
+                        <p>
+                            <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-semibold mr-2">Mantenimiento</span>
+                            Responsabilidad personal en cada detalle, garantizando perfecto orden.
+                        </p>
+                    </div>
+                    <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                        <p class="text-gray-700 italic font-serif">
+                            "Buscamos replicar este mismo nivel de cuidado y compromiso en nuestro futuro hogar en Málaga."
+                        </p>
+                    </div>
+                </div>
+
+                                 <!-- Galería -->
+                 <div class="md:w-1/2">
+                     <div id="gallery" class="relative overflow-hidden rounded-lg shadow-2xl cursor-pointer">
+                         <div class="aspect-video">
+                             <img id="gallery-img-1" src="images/home_1.jpg" alt="Nuestra casita de ladrillo y vigas de madera, el refugio que hemos convertido en hogar" class="gallery-image w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(0)">
+                             <img id="gallery-img-2" src="images/home_2.jpg" alt="El salón bañado de sol y vistas infinitas, el corazón cálido de nuestra casa." class="gallery-image w-full h-full object-cover hidden transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(1)">
+                             <img id="gallery-img-3" src="images/home_3.jpg" alt="Interior luminoso y ordenado" class="gallery-image w-full h-full object-cover hidden transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(2)">
+                             <img id="gallery-img-4" src="images/home_4.jpg" alt="Nuestro perro de guardia en las escaleras, vigilando el hogar que juntos hemos construido" class="gallery-image w-full h-full object-cover hidden transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(3)">
+                             <img id="gallery-img-5" src="images/home_5.jpg" alt="La terraza de guijarros y madera, donde compartimos tardes de café bajo la buganvilla" class="gallery-image w-full h-full object-cover hidden transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(4)">
+                             <img id="gallery-img-6" src="images/home_6.jpg" alt="Los primeros rayos colándose entre los árboles, saludándonos cada mañana en nuestro jardín" class="gallery-image w-full h-full object-cover hidden transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(5)">
+                             <img id="gallery-img-7" src="images/home_7.jpg" alt="El mirador en la cima, perdido entre pimientos y niebla, nuestro pequeño paraíso en las alturas" class="gallery-image w-full h-full object-cover hidden transition-transform duration-300 hover:scale-105" loading="lazy" onclick="openModal(6)">
+                         </div>
+
+                         <!-- Indicador de que se puede hacer clic -->
+                         <div class="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-2 py-1 rounded text-xs">
+                             <span class="flex items-center">
+                                 🔍 <span class="ml-1 hidden sm:inline">Clic para ampliar</span>
+                             </span>
+                         </div>
+                         <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                             <button onclick="prevImage()" class="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400">
+                                 <span class="text-gray-800">❮</span>
+                             </button>
+                             <button onclick="nextImage()" class="bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400">
+                                 <span class="text-gray-800">❯</span>
+                             </button>
+                         </div>
+                         <div class="absolute top-4 right-4 flex space-x-1">
+                             <button id="dot-1" onclick="goToImage(0)" class="w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                             <button id="dot-2" onclick="goToImage(1)" class="w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                             <button id="dot-3" onclick="goToImage(2)" class="w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                             <button id="dot-4" onclick="goToImage(3)" class="w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                             <button id="dot-5" onclick="goToImage(4)" class="w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                             <button id="dot-6" onclick="goToImage(5)" class="w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                             <button id="dot-7" onclick="goToImage(6)" class="w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer hover:scale-125 transition-transform duration-200"></button>
+                         </div>
+                         <!-- Contador de imágenes -->
+                         <div class="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-3 py-1 rounded-full text-sm">
+                             <span id="current-image">1</span> / 7
+                         </div>
+                     </div>
+                 </div>
+            </div>
+                 </div>
+     </section>
+
+     <!-- Modal para ampliar imágenes de la casa -->
+     <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4">
+         <div class="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+             <!-- Botón cerrar -->
+             <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-300 z-10">
+                 ✕
+             </button>
+
+             <!-- Imagen ampliada -->
+             <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+
+             <!-- Navegación -->
+             <button onclick="prevModalImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full w-12 h-12 flex items-center justify-center transition-colors duration-300">
+                 ❮
+             </button>
+             <button onclick="nextModalImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full w-12 h-12 flex items-center justify-center transition-colors duration-300">
+                 ❯
+             </button>
+
+             <!-- Información de la imagen -->
+             <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
+                 <div class="bg-black bg-opacity-60 text-white px-4 py-2 rounded-lg">
+                     <p id="modalImageTitle" class="text-sm sm:text-base font-medium"></p>
+                     <p class="text-xs mt-1 opacity-75">
+                         <span id="modalImageCounter"></span> - Clic fuera de la imagen para cerrar
+                     </p>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <!-- Modal para ampliar fotos familiares -->
+     <div id="familyModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4">
+         <div class="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+             <!-- Botón cerrar -->
+             <button onclick="closeFamilyModal()" class="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-300 z-10">
+                 ✕
+             </button>
+
+             <!-- Imagen ampliada -->
+             <img id="familyModalImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+
+             <!-- Navegación -->
+             <button onclick="prevFamilyModalImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full w-12 h-12 flex items-center justify-center transition-colors duration-300">
+                 ❮
+             </button>
+             <button onclick="nextFamilyModalImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full w-12 h-12 flex items-center justify-center transition-colors duration-300">
+                 ❯
+             </button>
+
+             <!-- Información de la imagen -->
+             <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
+                 <div class="bg-black bg-opacity-60 text-white px-4 py-2 rounded-lg">
+                     <p id="familyModalImageTitle" class="text-sm sm:text-base font-medium"></p>
+                     <p class="text-xs mt-1 opacity-75">
+                         <span id="familyModalImageCounter"></span> - Clic fuera de la imagen para cerrar
+                     </p>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <!-- Solvencia y Confianza -->
+     <section class="py-16 px-4 bg-green-50">
+         <div class="max-w-6xl mx-auto">
+             <h2 class="text-4xl font-bold text-center text-green-800 mb-8">Garantía Financiera Total</h2>
+
+             <!-- Sello de confianza -->
+             <div class="text-center mb-12">
+                 <div class="inline-flex items-center bg-green-100 border border-green-300 rounded-lg px-6 py-3">
+                     <span class="text-2xl mr-3">🛡️</span>
+                     <div class="text-left">
+                         <div class="font-bold text-green-800">Verificación Completa Disponible</div>
+                         <div class="text-sm text-green-600">Documentación financiera lista para revisión inmediata</div>
+                     </div>
+                 </div>
+             </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">💰</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Ingresos Estables USD</h3>
+                    <div class="flex justify-between items-center text-sm text-gray-600 space-y-2">
+                        <div class="w-full">
+                            <p class="font-semibold">Coinbase (NASDAQ)</p>
+                            <p class="font-semibold">3G Office International</p>
+                            <p class="font-semibold">Firma Arquitectura Chile</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">📋</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Referencias Disponibles</h3>
+                    <div class="flex justify-between items-center text-sm text-gray-600">
+                        <div class="w-full space-y-2">
+                            <p>✓ Nóminas actualizadas</p>
+                            <p>✓ Extractos bancarios</p>
+                            <p>✓ Referencias arrendadores</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <div class="text-5xl mb-4">⭐</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Historial Impecable</h3>
+                    <div class="flex justify-between items-center text-sm text-gray-600">
+                        <div class="w-full space-y-2">
+                            <p>✓ Como propietarios</p>
+                            <p>✓ Como inquilinos</p>
+                            <p>✓ Pagos puntuales siempre</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                         <!-- Llamada a la acción mejorada -->
+             <div class="bg-white rounded-lg p-8 text-center shadow-lg">
+                 <h3 class="text-xl font-bold text-gray-900 mb-4">📋 Documentación Lista para Revisión</h3>
+                 <p class="text-gray-600 mb-6">Tenemos toda la documentación preparada y lista para enviar inmediatamente:</p>
+                 <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700 mb-6">
+                     <div>✓ Certificados laborales actualizados</div>
+                     <div>✓ 3 últimas nóminas</div>
+                     <div>✓ Extractos bancarios recientes</div>
+                     <div>✓ Referencias de propietarios anteriores</div>
+                     <div>✓ Justificantes de ingresos en USD</div>
+                     <div>✓ Seguro de responsabilidad civil</div>
+                 </div>
+                 <div class="space-y-3 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                     <a href="mailto:mafer.huizzi@gmail.com?subject=Solicitud%20Documentos%20Familia%20Rondon-Marquez" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                         Solicitar documentos ahora
+                     </a>
+                     <button class="inline-block border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                         Videollamada de presentación
+                     </button>
+                 </div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Estilo de Vida -->
+    <section class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Nuestro Estilo de Vida</h2>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="flex space-x-4 p-6 bg-yellow-50 rounded-lg hover:shadow-lg transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-xl">🏃‍♂️</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Vida Activa</h3>
+                        <p class="text-gray-600 text-sm">Amantes del deporte y las actividades al aire libre. Valoramos los espacios naturales.</p>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 p-6 bg-yellow-50 rounded-lg hover:shadow-lg transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-xl">🥗</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Gastronomía Saludable</h3>
+                        <p class="text-gray-600 text-sm">Cocinamos en casa con ingredientes frescos. Respetamos y cuidamos la cocina.</p>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 p-6 bg-yellow-50 rounded-lg hover:shadow-lg transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-xl">🌿</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Naturaleza & Diseño</h3>
+                        <p class="text-gray-600 text-sm">Pasión por plantas, jardines y espacios estéticamente equilibrados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galería familiar -->
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Así Vivimos el Día a Día</h3>
+                <p class="text-gray-600 font-serif">Momentos que reflejan nuestros valores y personalidad como familia</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="relative group cursor-pointer" onclick="openFamilyModal(0)">
+                    <img src="images/family_1.jpg" alt="Toda la familia “lago turquesa sin mojarse”: selfie épico incluido" class="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">🔍</span>
+                    </div>
+                </div>
+                <div class="relative group cursor-pointer" onclick="openFamilyModal(1)">
+                    <img src="images/family_2.jpg" alt="Modo ‘mostacho chocolateado’ activado: nuestro peque convirtiendo cada bocado en arte abstracto" class="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">🔍</span>
+                    </div>
+                </div>
+                <div class="relative group cursor-pointer" onclick="openFamilyModal(2)">
+                    <img src="images/family_3.jpg" alt="Mini delantero brasileño en entrenamiento: dribla guayabas bajo el árbol" class="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">🔍</span>
+                    </div>
+                </div>
+                <div class="relative group cursor-pointer" onclick="openFamilyModal(3)">
+                    <img src="images/family_4.jpg" alt="Cumbre familiar de sabor: Eddy analizando cada slice de pizza como si fuera un código fuente" class="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">🔍</span>
+                    </div>
+                </div>
+                <div class="relative group cursor-pointer" onclick="openFamilyModal(4)">
+                    <img src="images/family_5.jpg" alt="Mamá e hijo entrenando para la Olimpiada de Pelotas de Plástico" class="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">🔍</span>
+                    </div>
+                </div>
+                <div class="relative group cursor-pointer" onclick="openFamilyModal(5)">
+                    <img src="images/family_6.jpg" alt="Eddy en la media maratón: corriendo más rápido que nuestro carrito de compras" class="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                        <span class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">🔍</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensaje personalizado -->
+            <div class="mt-8 p-6 bg-green-50 rounded-lg text-center">
+                <p class="text-gray-700 font-serif leading-relaxed">
+                    <span class="text-green-800 font-semibold">"Estas fotos muestran quiénes somos realmente:"</span><br>
+                    Una familia que valora los momentos simples, cuida los espacios que habita y vive con respeto hacia el entorno y las personas que nos rodean.
+                </p>
+            </div>
+        </div>
+    </section>
+
+         <!-- Logística de Visitas -->
+     <section id="contacto" class="py-16 px-4 bg-gray-100">
+         <div class="max-w-4xl mx-auto text-center">
+             <h2 class="text-4xl font-bold text-green-800 mb-4">Proceso Simplificado de Contacto</h2>
+             <p class="text-lg text-gray-600 mb-8">Facilitamos todo el proceso con representación local en Málaga</p>
+
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                        <span class="text-2xl">📞</span>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-2xl font-semibold text-gray-900">Mafer Huizzi</h3>
+                        <p class="text-gray-600">Nuestra prima de confianza en Málaga</p>
+                    </div>
+                </div>
+
+                <p class="text-gray-700 mb-6 font-serif leading-relaxed">
+                    Disponible para coordinar visitas, evaluar propiedades en nuestro nombre y facilitar toda la comunicación necesaria.
+                </p>
+
+                <div class="space-y-3 mb-6">
+                    <p class="text-gray-700"><strong>Email:</strong> mafer.huizzi@gmail.com</p>
+                    <p class="text-gray-700"><strong>Teléfono:</strong> +34 000 000 000</p>
+                </div>
+
+                <a href="mailto:mafer.huizzi@gmail.com" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Contactar ahora
+                </a>
+            </div>
+        </div>
+    </section>
+
+         <!-- Referencias y Testimonios -->
+     <section class="py-16 px-4 bg-white">
+         <div class="max-w-6xl mx-auto">
+             <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Lo que Dicen de Nosotros</h2>
+             <div class="grid md:grid-cols-2 gap-8 mb-12">
+                 <!-- Testimonio 1 -->
+                 <div class="bg-green-50 rounded-lg p-6 shadow-md">
+                     <div class="flex items-center mb-4">
+                         <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center mr-4">
+                             <span class="text-xl">🏠</span>
+                         </div>
+                         <div>
+                             <div class="font-bold text-gray-900">Ana Contreras</div>
+                             <div class="text-sm text-gray-600">Propietaria anterior - Santiago</div>
+                         </div>
+                     </div>
+                     <p class="text-gray-700 italic">"Inquilinos excepcionales. Entregaron la propiedad en mejores condiciones que cuando la recibieron. Pagos siempre puntuales y comunicación excelente."</p>
+                     <div class="mt-3 flex">
+                         <span class="text-yellow-500">⭐⭐⭐⭐⭐</span>
+                     </div>
+                 </div>
+
+                 <!-- Testimonio 2 -->
+                 <div class="bg-blue-50 rounded-lg p-6 shadow-md">
+                     <div class="flex items-center mb-4">
+                         <div class="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center mr-4">
+                             <span class="text-xl">🏢</span>
+                         </div>
+                         <div>
+                             <div class="font-bold text-gray-900">Gestora Las Condes</div>
+                             <div class="text-sm text-gray-600">Administración de Propiedades</div>
+                         </div>
+                     </div>
+                     <p class="text-gray-700 italic">"Familia modelo. En 3 años de arrendamiento nunca tuvimos un solo problema. Recomendamos sin dudarlo a cualquier propietario."</p>
+                     <div class="mt-3 flex">
+                         <span class="text-yellow-500">⭐⭐⭐⭐⭐</span>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </section>
+
+     <!-- Extras Familiares -->
+     <section class="py-16 px-4 bg-yellow-50">
+         <div class="max-w-4xl mx-auto">
+             <div class="bg-white rounded-lg p-8 text-center shadow-md">
+                 <div class="flex items-center justify-center space-x-4 mb-4">
+                     <div class="text-4xl hover:scale-110 transition-transform duration-200 cursor-pointer">🐕</div>
+                     <h3 class="text-2xl font-semibold text-gray-900">Nuestros Compañeros Peludos</h3>
+                 </div>
+                 <p class="text-gray-700 font-serif leading-relaxed mb-4">
+                     Viajamos con dos <strong>Jack Russell</strong> tranquilos y certificados. Pequeños, educados y acostumbrados a la vida en espacios ordenados y limpios.
+                 </p>
+                 <div class="grid md:grid-cols-3 gap-4 text-sm text-gray-600 mb-4">
+                     <div>✓ Certificados veterinarios</div>
+                     <div>✓ Vacunas al día</div>
+                     <div>✓ Seguro de mascotas</div>
+                 </div>
+                 <div class="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
+                     Mascotas responsables certificadas
+                 </div>
+             </div>
+         </div>
+     </section>
+
+         <!-- Footer y Llamada Final -->
+     <footer class="py-16 px-4 bg-green-800 text-white">
+         <div class="max-w-4xl mx-auto text-center">
+             <h2 class="text-3xl font-bold mb-4">¿Listo para Conocer a sus Próximos Inquilinos Ideales?</h2>
+
+             <!-- Elementos de urgencia y escasez -->
+             <div class="bg-yellow-400 text-green-900 rounded-lg p-4 mb-6 inline-block">
+                 <span class="font-bold">⏰ Disponibles desde Agosto 2025</span> |
+                 <span class="font-bold">📅 Contrato mínimo 12 meses</span>
+             </div>
+
+             <p class="text-xl mb-8 opacity-90 font-serif">
+                 Estamos listos para mudarnos y comprometernos a largo plazo. No pierda la oportunidad de tener inquilinos verificados, responsables y con garantías reales.
+             </p>
+
+             <!-- Propuesta final de valor -->
+             <div class="bg-green-700 rounded-lg p-6 mb-8">
+                 <h3 class="text-xl font-bold mb-4">🎯 Lo que Obtiene con Nosotros:</h3>
+                 <div class="grid md:grid-cols-2 gap-4 text-sm">
+                     <div>✅ Ingresos verificables en USD</div>
+                     <div>✅ Historial impecable comprobable</div>
+                     <div>✅ Representante local en Málaga</div>
+                     <div>✅ Familia estable y profesional</div>
+                     <div>✅ Compromiso a largo plazo</div>
+                     <div>✅ Cuidado excepcional de la propiedad</div>
+                 </div>
+             </div>
+
+             <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center mb-8">
+                 <a href="mailto:mafer.huizzi@gmail.com?subject=Contacto%20Urgente%20-%20Familia%20Rondon-Marquez&body=Hola%20María%20Fernanda,%0A%0AHe%20revisado%20el%20perfil%20de%20la%20familia%20Rondon-Marquez%20y%20me%20interesa%20conocer%20más.%20¿Podemos%20coordinar%20una%20llamada%20o%20videollamada%20esta%20semana?%0A%0APropiedad:%20%0AUbicación:%20%0ADisponibilidad:%20%0A%0AGracias!" class="inline-block bg-yellow-400 text-green-900 px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-300 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+                     📞 Contactar AHORA
+                 </a>
+                 <a href="tel:+34000000000" class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-green-800 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-green-300">
+                     📱 Llamar directamente
+                 </a>
+             </div>
+
+             <!-- Info de contacto rápido -->
+             <div class="bg-green-700 rounded-lg p-4 mb-8">
+                 <p class="font-bold mb-2">📧 Respuesta garantizada en menos de 2 horas</p>
+                 <p class="text-sm opacity-90">Estamos disponibles para videollamadas</p>
+             </div>
+
+             <div class="mt-12 pt-8 border-t border-green-700 opacity-75">
+                 <p>&copy; 2025 Familia Rondon-Marquez | Perfil verificado y listo para alquilar</p>
+             </div>
+         </div>
+     </footer>
+
+         <script>
+         let currentImageIndex = 0;
+         const totalImages = 7;
+
+         // Preload hero background images
+         function preloadHeroImages() {
+             const heroImages = [
+                 'images/home_1.jpg',
+                 'images/home_6.jpg',
+                 'images/home_7.jpg'
+             ];
+
+             let loadedCount = 0;
+             const totalHeroImages = heroImages.length;
+
+             heroImages.forEach(src => {
+                 const img = new Image();
+                                  img.onload = () => {
+                     loadedCount++;
+                     if (loadedCount === totalHeroImages) {
+                         // All hero images loaded, activate slideshow
+                         const heroSection = document.querySelector('.hero-bg');
+                         heroSection.classList.add('images-loaded');
+
+                         // Switch loading indicators
+                         const loadingIndicator = document.getElementById('hero-loading');
+                         const loadedIndicator = document.getElementById('hero-loaded');
+                         if (loadingIndicator) loadingIndicator.style.display = 'none';
+                         if (loadedIndicator) loadedIndicator.style.display = 'block';
+                     }
+                 };
+                 img.onerror = () => {
+                     console.warn(`Failed to load hero image: ${src}`);
+                     loadedCount++;
+                     if (loadedCount === totalHeroImages) {
+                         // Even if some failed, activate what we have
+                         const heroSection = document.querySelector('.hero-bg');
+                         heroSection.classList.add('images-loaded');
+
+                         // Switch loading indicators
+                         const loadingIndicator = document.getElementById('hero-loading');
+                         const loadedIndicator = document.getElementById('hero-loaded');
+                         if (loadingIndicator) loadingIndicator.style.display = 'none';
+                         if (loadedIndicator) loadedIndicator.style.display = 'block';
+                     }
+                 };
+                 img.src = src;
+             });
+         }
+
+         // Start preloading when DOM is ready
+         document.addEventListener('DOMContentLoaded', preloadHeroImages);
+
+         function showImage(index) {
+             // Hide all images
+             for (let i = 1; i <= totalImages; i++) {
+                 document.getElementById(`gallery-img-${i}`).classList.add('hidden');
+                 document.getElementById(`dot-${i}`).classList.remove('opacity-100');
+                 document.getElementById(`dot-${i}`).classList.add('opacity-50');
+             }
+
+             // Show current image
+             document.getElementById(`gallery-img-${index + 1}`).classList.remove('hidden');
+             document.getElementById(`dot-${index + 1}`).classList.remove('opacity-50');
+             document.getElementById(`dot-${index + 1}`).classList.add('opacity-100');
+
+             // Update counter
+             document.getElementById('current-image').textContent = index + 1;
+         }
+
+         function nextImage() {
+             currentImageIndex = (currentImageIndex + 1) % totalImages;
+             showImage(currentImageIndex);
+         }
+
+         function prevImage() {
+             currentImageIndex = (currentImageIndex - 1 + totalImages) % totalImages;
+             showImage(currentImageIndex);
+         }
+
+         function goToImage(index) {
+             currentImageIndex = index;
+             showImage(currentImageIndex);
+         }
+
+         // Auto-advance gallery every 6 seconds (slower for more images)
+         setInterval(nextImage, 6000);
+
+         // Modal functionality
+         const images = [
+             { src: 'images/home_1.jpg', alt: 'Nuestra casita de ladrillo y vigas de madera, el refugio que hemos convertido en hogar' },
+             { src: 'images/home_2.jpg', alt: 'El salón bañado de sol y vistas infinitas, el corazón cálido de nuestra casa.' },
+             { src: 'images/home_3.jpg', alt: 'El pasillo de cristal que une cada rincón y deja entrar el paisaje que vivimos cada día' },
+             { src: 'images/home_4.jpg', alt: 'Nuestro perro de guardia en las escaleras, vigilando el hogar que juntos hemos construido' },
+             { src: 'images/home_5.jpg', alt: 'La terraza de guijarros y madera, donde compartimos tardes de café bajo la buganvilla' },
+             { src: 'images/home_6.jpg', alt: 'Los primeros rayos colándose entre los árboles, saludándonos cada mañana en nuestro jardín' },
+             { src: 'images/home_7.jpg', alt: 'El mirador en la cima, perdido entre pimientos y niebla, nuestro pequeño paraíso en las alturas' }
+         ];
+
+         let currentModalIndex = 0;
+
+         function openModal(index) {
+             currentModalIndex = index;
+             const modal = document.getElementById('imageModal');
+             const modalImage = document.getElementById('modalImage');
+             const modalTitle = document.getElementById('modalImageTitle');
+             const modalCounter = document.getElementById('modalImageCounter');
+
+             modalImage.src = images[index].src;
+             modalImage.alt = images[index].alt;
+             modalTitle.textContent = images[index].alt;
+             modalCounter.textContent = `${index + 1} de ${images.length}`;
+
+             modal.classList.remove('hidden');
+             modal.classList.add('flex');
+             document.body.style.overflow = 'hidden'; // Prevent body scroll
+         }
+
+         function closeModal() {
+             const modal = document.getElementById('imageModal');
+             modal.classList.add('hidden');
+             modal.classList.remove('flex');
+             document.body.style.overflow = 'auto'; // Restore body scroll
+         }
+
+         function nextModalImage() {
+             currentModalIndex = (currentModalIndex + 1) % images.length;
+             openModal(currentModalIndex);
+         }
+
+         function prevModalImage() {
+             currentModalIndex = (currentModalIndex - 1 + images.length) % images.length;
+             openModal(currentModalIndex);
+         }
+
+         // Close modal when clicking outside the image
+         document.getElementById('imageModal').addEventListener('click', function(e) {
+             if (e.target === this) {
+                 closeModal();
+             }
+         });
+
+         // Close modal with Escape key
+         document.addEventListener('keydown', function(e) {
+             if (e.key === 'Escape') {
+                 closeModal();
+                 closeFamilyModal();
+             }
+         });
+
+         // Family gallery functionality
+         const familyImages = [
+             { src: 'images/family_1.jpg', alt: 'Toda la familia “lago turquesa sin mojarse”: selfie épico incluido' },
+             { src: 'images/family_2.jpg', alt: 'Modo ‘mostacho chocolateado’ activado: nuestro peque convirtiendo cada bocado en arte abstracto' },
+             { src: 'images/family_3.jpg', alt: 'Mini delantero brasileño en entrenamiento: dribla guayabas bajo el árbol' },
+             { src: 'images/family_4.jpg', alt: 'Cumbre familiar de sabor: Eddy analizando cada slice de pizza como si fuera un código fuente' },
+             { src: 'images/family_5.jpg', alt: 'Mamá e hijo entrenando para la Olimpiada de Pelotas de Plástico' },
+             { src: 'images/family_6.jpg', alt: 'Eddy en la media maratón: corriendo más rápido que nuestro carrito de compras' }
+         ];
+
+         let currentFamilyModalIndex = 0;
+
+         function openFamilyModal(index) {
+             currentFamilyModalIndex = index;
+             const modal = document.getElementById('familyModal');
+             const modalImage = document.getElementById('familyModalImage');
+             const modalTitle = document.getElementById('familyModalImageTitle');
+             const modalCounter = document.getElementById('familyModalImageCounter');
+
+             modalImage.src = familyImages[index].src;
+             modalImage.alt = familyImages[index].alt;
+             modalTitle.textContent = familyImages[index].alt;
+             modalCounter.textContent = `${index + 1} de ${familyImages.length}`;
+
+             modal.classList.remove('hidden');
+             modal.classList.add('flex');
+             document.body.style.overflow = 'hidden'; // Prevent body scroll
+         }
+
+         function closeFamilyModal() {
+             const modal = document.getElementById('familyModal');
+             modal.classList.add('hidden');
+             modal.classList.remove('flex');
+             document.body.style.overflow = 'auto'; // Restore body scroll
+         }
+
+         function nextFamilyModalImage() {
+             currentFamilyModalIndex = (currentFamilyModalIndex + 1) % familyImages.length;
+             openFamilyModal(currentFamilyModalIndex);
+         }
+
+         function prevFamilyModalImage() {
+             currentFamilyModalIndex = (currentFamilyModalIndex - 1 + familyImages.length) % familyImages.length;
+             openFamilyModal(currentFamilyModalIndex);
+         }
+
+         // Close family modal when clicking outside the image
+         document.getElementById('familyModal').addEventListener('click', function(e) {
+             if (e.target === this) {
+                 closeFamilyModal();
+             }
+         });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
