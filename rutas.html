@@ -207,7 +207,82 @@
             setTimeout(() => messageBox.classList.add('hidden'), 3000);
         }
 
+        function displayAllRoutes() {
+            currentRouteLayerGroup.clearLayers(); // Limpiar marcadores y polilínea anteriores
+            locationListElement.innerHTML = ''; // Limpiar lista de paradas
+
+            routeNameElement.textContent = 'Todas las Rutas';
+            routeScheduleElement.textContent = 'Mostrando todas las líneas de transporte escolar';
+
+            const allLatLngs = [];
+            let stopCounter = 1;
+
+            routesData.forEach((route, routeIndex) => {
+                const latLngs = [];
+
+                // Crear un título para cada ruta en la lista lateral
+                const routeTitle = document.createElement('div');
+                routeTitle.className = 'location-item text-gray-800 text-sm font-bold border-l-4 bg-gray-50';
+                routeTitle.style.borderLeftColor = route.color;
+                routeTitle.innerHTML = `<div class="flex items-center"><span class="w-3 h-3 rounded-full mr-2" style="background-color: ${route.color};"></span>${route.name}</div>`;
+                locationListElement.appendChild(routeTitle);
+
+                route.stops.forEach((stop, index) => {
+                    const customIcon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: `<span style="line-height: 20px;">${index + 1}</span>`,
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12],
+                        style: `background-color: ${route.color};`
+                    });
+
+                    const marker = L.marker([stop.lat, stop.lng], { icon: customIcon })
+                        .bindPopup(`<b>${index + 1}. ${stop.name}</b><br>${stop.address}<br><small>Línea: ${route.name}</small>`);
+
+                    latLngs.push([stop.lat, stop.lng]);
+                    allLatLngs.push([stop.lat, stop.lng]);
+                    currentRouteLayerGroup.addLayer(marker);
+
+                    // Añadir a la lista lateral
+                    const listItem = document.createElement('div');
+                    listItem.className = 'location-item text-gray-700 text-sm ml-4';
+                    listItem.innerHTML = `<b>${index + 1}. ${stop.name}</b><br><span class="text-xs text-gray-500">${stop.address}</span>`;
+                    listItem.onclick = () => {
+                        map.setView([stop.lat, stop.lng], 16);
+                        marker.openPopup();
+                        showMessage(`Centrando en: ${stop.name}`);
+                    };
+                    locationListElement.appendChild(listItem);
+                });
+
+                // Crear polilínea para cada ruta
+                if (latLngs.length > 1) {
+                    const polyline = L.polyline(latLngs, {
+                        color: route.color,
+                        weight: 4,
+                        opacity: 0.7,
+                        dashArray: routeIndex === 0 ? null : '10, 10' // Línea sólida para la primera ruta, punteada para las demás
+                    });
+                    currentRouteLayerGroup.addLayer(polyline);
+                }
+            });
+
+            // Ajustar el zoom para mostrar todas las rutas
+            if (allLatLngs.length > 0) {
+                const group = new L.featureGroup(currentRouteLayerGroup.getLayers());
+                map.fitBounds(group.getBounds(), { padding: [50, 50] });
+            }
+
+            showMessage(`Mostrando todas las rutas (${routesData.length} líneas).`, 'success');
+        }
+
         function displayRoute(routeIndex) {
+            // Si se selecciona "todas las rutas"
+            if (routeIndex === -1) {
+                displayAllRoutes();
+                return;
+            }
+
             currentRouteLayerGroup.clearLayers(); // Limpiar marcadores y polilínea anteriores
             locationListElement.innerHTML = ''; // Limpiar lista de paradas
 
@@ -263,6 +338,13 @@
 
         // --- Inicialización y Eventos ---
         // Poblar el selector de rutas
+        // Agregar opción para mostrar todas las rutas
+        const allRoutesOption = document.createElement('option');
+        allRoutesOption.value = -1;
+        allRoutesOption.textContent = '🗺️ Todas las Rutas';
+        routeSelector.appendChild(allRoutesOption);
+
+        // Agregar las rutas individuales
         routesData.forEach((route, index) => {
             const option = document.createElement('option');
             option.value = index;
@@ -276,10 +358,10 @@
             displayRoute(selectedRouteIndex);
         });
 
-        // Mostrar la primera ruta por defecto al cargar
+        // Mostrar todas las rutas por defecto al cargar
         if (routesData.length > 0) {
-            routeSelector.value = "0"; // Seleccionar la primera opción
-            displayRoute(0);
+            routeSelector.value = "-1"; // Seleccionar "Todas las rutas"
+            displayRoute(-1);
         } else {
             showMessage("No hay rutas para mostrar.", "info");
             routeNameElement.textContent = "Sin rutas disponibles";
@@ -291,12 +373,23 @@
         window.addEventListener('resize', () => {
             map.invalidateSize();
             // Reajustar el zoom si hay una ruta activa
-            const currentPolyline = currentRouteLayerGroup.getLayers().find(layer => layer instanceof L.Polyline);
-            if (currentPolyline) {
-                 map.fitBounds(currentPolyline.getBounds(), { padding: [50, 50] });
-            } else if (routesData[parseInt(routeSelector.value)] && routesData[parseInt(routeSelector.value)].stops.length > 0){
-                 // Si no hay polilínea pero sí paradas (ej. una sola parada)
-                 map.setView(routesData[parseInt(routeSelector.value)].stops[0], 15);
+            const selectedRouteIndex = parseInt(routeSelector.value);
+
+            if (selectedRouteIndex === -1) {
+                // Si están mostradas todas las rutas, ajustar para mostrar todas
+                const group = new L.featureGroup(currentRouteLayerGroup.getLayers());
+                if (group.getLayers().length > 0) {
+                    map.fitBounds(group.getBounds(), { padding: [50, 50] });
+                }
+            } else {
+                // Para una ruta específica
+                const currentPolyline = currentRouteLayerGroup.getLayers().find(layer => layer instanceof L.Polyline);
+                if (currentPolyline) {
+                     map.fitBounds(currentPolyline.getBounds(), { padding: [50, 50] });
+                } else if (routesData[selectedRouteIndex] && routesData[selectedRouteIndex].stops.length > 0){
+                     // Si no hay polilínea pero sí paradas (ej. una sola parada)
+                     map.setView([routesData[selectedRouteIndex].stops[0].lat, routesData[selectedRouteIndex].stops[0].lng], 15);
+                }
             }
         });
 
