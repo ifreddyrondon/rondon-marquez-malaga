@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Rutas Escolares</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        #map { height: 100vh; width: 100%; border-radius: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .controls-container {
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 1rem;
+            max-height: calc(100vh - 2rem); /* Full height minus margin */
+            display: flex;
+            flex-direction: column;
+        }
+        .location-list-container {
+            overflow-y: auto;
+            flex-grow: 1; /* Takes available space */
+        }
+        .location-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .location-item:hover {
+            background-color: #f9fafb;
+        }
+        .location-item:last-child {
+            border-bottom: none;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 0.375rem; /* Tailwind's rounded-md */
+        }
+        .leaflet-popup-content {
+            font-size: 0.875rem; /* Tailwind's text-sm */
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-div-icon {
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007AFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            background-size: 0.65rem auto;
+            padding-right: 2rem; /* Make space for arrow */
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen">
+
+    <!-- Panel Lateral con Controles y Lista de Ubicaciones -->
+    <div class="controls-container w-full md:w-1/3 lg:w-1/4 xl:w-1/5">
+        <h1 class="text-2xl font-bold mb-4 text-gray-800">Rutas Escolares</h1>
+
+        <div class="mb-4">
+            <label for="routeSelector" class="block text-sm font-medium text-gray-700 mb-1">Seleccionar Línea:</label>
+            <select id="routeSelector" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm">
+                <!-- Opciones de ruta se agregarán aquí -->
+            </select>
+        </div>
+
+        <div id="routeInfo" class="mb-3 p-3 bg-indigo-50 rounded-md">
+             <h2 id="routeName" class="text-lg font-semibold text-indigo-700"></h2>
+             <p id="routeSchedule" class="text-sm text-indigo-600"></p>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-2 text-gray-700">Paradas:</h3>
+        <div id="locationList" class="location-list-container bg-white rounded-md shadow-inner border border-gray-200">
+            <!-- Las ubicaciones se agregarán aquí por JavaScript -->
+        </div>
+        <div id="messageBox" class="mt-4 p-3 text-sm text-white bg-blue-500 rounded-md hidden"></div>
+    </div>
+
+    <!-- Contenedor del Mapa -->
+    <div id="map" class="flex-grow"></div>
+
+    <script>
+        // --- Datos de las Rutas ---
+        // NOTA: Las coordenadas (lat, lng) son APROXIMADAS. Para precisión, se requiere geocodificación profesional.
+        const routesData = [
+            {
+                name: "LÍNEA Nº 1 (COSTA ORIENTAL)",
+                color: '#FF0000', // Rojo
+                schedule: "Salida 1ª Parada: 08:30 h. – Llegada prevista al colegio: 09:25 h.",
+                stops: [
+                    { name: "Chilches (Urb. El Conde)", address: "Urb. El Conde, Chilches", lat: 36.7167895, lng: -4.2353292 },
+                    { name: "Urb. Condemar", address: "Urb. Condemar", lat: 36.7157763, lng: -4.2318309 },
+                    { name: "Avda. de la Axarquía, 32 (Los Rubios)", address: "Avda. de la Axarquía, 32, Los Rubios", lat: 36.7126941, lng: -4.2450102 },
+                    { name: "Urb. Lo Cea", address: "Urb. Lo Cea", lat: 36.7150104, lng: -4.2686407 },
+                    { name: "Avda. Mediterráneo (Hotel Elimar)", address: "Avda. Mediterráneo (Hotel Elimar)", lat: 36.7138466, lng: -4.2783266 },
+                    { name: "Terminal Portillo R. Victoria", address: "Terminal Portillo, Rincón de la Victoria", lat: 36.7160251, lng: -4.2922114 },
+                    { name: "Ayuntamiento R. Victoria", address: "Ayuntamiento, Rincón de la Victoria", lat: 36.7161075, lng: -4.2907719 },
+                    { name: "Avda. Mediterráneo (Mercadona)", address: "Avda. Mediterráneo (Mercadona)", lat: 36.7160, lng: -4.2750 },
+                    { name: "Urb. El Cantal", address: "Urb. El Cantal, Rincón de la Victoria", lat: 36.7218431, lng: -4.2623617 },
+                    { name: "Avda. Málaga (gasolinera Repsol La Cala)", address: "Avda. de Málaga, La Cala del Moral", lat: 36.716115, lng: -4.307522 },
+                    { name: "Avda. Málaga, 10 (Iglesia La Cala)", address: "Avda. de Málaga, 10, La Cala del Moral", lat: 36.7159872, lng: -4.3081929 },
+                    { name: "C/ Almería, 47 (junto a Carrefour Express)", address: "Calle Almería, 47, Málaga", lat: 36.7206247, lng: -4.3563806 },
+                    { name: "Avda. Juan Sebastián Elcano, 127 (Farmacia)", address: "Avda. Juan Sebastián Elcano, 127, Málaga", lat: 36.7225, lng: -4.3702151 }
+                ]
+            },
+            {
+                name: "LÍNEA Nº 2 (TEATINOS - CENTRO CIUDAD)",
+                color: '#008000', // Verde
+                schedule: "Salida 1ª Parada: 08:40 h. – Llegada prevista al colegio: 09:25 h.",
+                stops: [
+                    { name: "Plaza Pintor Sandro Botticelli (Teatinos)", address: "Plaza Pintor Sandro Botticelli, Teatinos, Málaga", lat: 36.7194741, lng: -4.4603577 },
+                    { name: "C/ Cómpeta, 31 (IES Portada Alta)", address: "C/ Cómpeta, 31, Málaga", lat: 36.7189283, lng: -4.4552603 },
+                    { name: "Avda. Herrera Oria, 57 (frente C. Deportiva)", address: "Avda. Herrera Oria, 57, Málaga", lat: 36.718725, lng: -4.44952738 },
+                    { name: "Avda. Herrera Oria, 9 (parada bus 31)", address: "Avda. Herrera Oria, 9, Málaga", lat: 36.7182112, lng: -4.4425813 },
+                    { name: "Avda. de las Américas, 19 (esq. Avda. Aurora)", address: "Avda. de las Américas, 19, Málaga", lat: 36.7159731, lng: -4.437267 },
+                    { name: "Paseo Los Tilos (puerta estación autobuses)", address: "Paseo de los Tilos, Estación de Autobuses, Málaga", lat: 36.712985, lng: -4.4341058 },
+                    { name: "Avda. Aurora (Jardines P. Picasso)", address: "Avda. de la Aurora, Jardines Picasso, Málaga", lat: 36.7165021, lng: -4.4342761 },
+                    { name: "Avda. Andalucía (Bankinter – Jardines P. Picasso)", address: "Avda. de Andalucía, Edif. Picasso, Málaga", lat: 36.7168124, lng: -4.4335139 },
+                    { name: "Avda. Andalucía (parada bus frente Edificio Unicaja)", address: "Avda. de Andalucía, frente Edif. Unicaja, Málaga", lat: 36.7173808, lng: -4.4314111 },
+                    { name: "Alameda de Colón, 34 (Farmacia)", address: "Alameda de Colón, 34, Málaga", lat: 36.7133699, lng: -4.4243435 },
+                    { name: "Plaza de la Marina (parada bus 40, entrada Puerto)", address: "Plaza de la Marina, Málaga", lat: 36.7176244, lng: -4.4218117 }
+                ]
+            },
+            {
+                name: "LÍNEA Nº 3 (PARQUE LITORAL - CENTRO CIUDAD)",
+                color: '#0000FF', // Azul
+                schedule: "Salida 1ª Parada: 08:25 h. – Llegada prevista al colegio: 09:25 h.",
+                stops: [
+                    { name: "Av. Velázquez, 101 (parada Metro)", address: "Av. de Velázquez, 101, Málaga", lat: 36.6915103, lng: -4.4578315 },
+                    { name: "Av. Imperio Argentina, 10 (clínica dental)", address: "Av. Imperio Argentina, 10, Málaga", lat: 36.6823439, lng: -4.4562277 },
+                    { name: "Camino de la Térmica (parada bus frente nº 28)", address: "Camino de la Térmica, frente 28, Málaga", lat: 36.6863518, lng: -4.4492047 },
+                    { name: "Luis Barahona de Soto, 5 (frente P. Mediterráneo)", address: "C. Luis Barahona de Soto, 5, Málaga", lat: 36.6935663, lng: -4.4448965 },
+                    { name: "Avda. Sor Teresa Prat, 55 (clínica dental Áncora)", address: "Avda. Sor Teresa Prat, 55, Málaga", lat: 36.6959648, lng: -4.4426364 },
+                    { name: "Avda. Sor Teresa Prat (Tabacalera)", address: "Avda. Sor Teresa Prat, La Tabacalera, Málaga", lat: 36.6993797, lng: -4.4402965 },
+                    { name: "C/ Ayala, 19-21 (Los Arcos)", address: "C/ Ayala, 19-21, Málaga", lat: 36.7092607, lng: -4.4320198 },
+                    { name: "Explanada de la Estación (Visionlab)", address: "Explanada de la Estación, Málaga (Estación María Zambrano)", lat: 36.7125664, lng: -4.4315274 },
+                    { name: "Paseo del Parque (Parada bus 1-14-37-C2-N2)", address: "Paseo del Parque, Málaga (Centro)", lat: 36.7192717, lng: -4.41761 }
+                ]
+            },
+            {
+                name: "LÍNEA Nº 4 (COLINAS DEL LIMONAR – OLLETAS)",
+                color: '#FFA500', // Naranja
+                schedule: "Salida 1ª Parada: 09:00 h. – Llegada prevista al colegio: 09:20 h.",
+                stops: [
+                    { name: "Profesor Antonio Acosta", address: "C/ Profesor Antonio Acosta, Málaga (Colinas del Limonar)", lat: 36.7358107 , lng: -4.394535 },
+                    { name: "Pl. Arboladura", address: "Plaza de la Arboladura, Málaga (Colinas del Limonar)", lat: 36.7359907, lng: -4.3964942 },
+                    { name: "Pintor Fermín Durante", address: "C/ Pintor Fermín Durante, Málaga (Colinas del Limonar)", lat: 36.7374521, lng: -4.3962817 },
+                    { name: "Dr. Pedro Barceló", address: "C/ Doctor Pedro Barceló, Málaga (Colinas del Limonar)", lat: 36.7354045, lng: -4.3978676 },
+                    { name: "Avda. Camarón de la Isla", address: "Avda. Camarón de la Isla, Málaga (Mayorazgo/Limonar)", lat: 36.7364075, lng: -4.4042438 },
+                    { name: "C/ Olletas (parada bus EMASA)", address: "C/ Olletas, Málaga (Barrio Olletas)", lat: 36.7352044, lng: -4.4167018 },
+                    { name: "Camino del Colmenar", address: "Camino del Colmenar, Málaga (Cerca Olletas)", lat: 36.7343471, lng: -4.4158383 }, // General point on the road
+                    { name: "Alameda de Capuchinos, 76", address: "Alameda de Capuchinos, 76, Málaga", lat: 36.7321658, lng: -4.4177437 },
+                    { name: "C/ Toquero", address: "C/ Toquero, Málaga (Zona Capuchinos/Olletas)", lat: 36.7338691, lng: -4.4146354 },
+                    { name: "Camino de los Almendrales", address: "Camino de los Almendrales, Málaga (El Candado/Este)", lat: 36.7346012, lng: -4.4120346 },
+                    { name: "La Era (Referencia)", address: "Zona 'La Era', Málaga (Cerca C. Almendrales)", lat: 36.7336898, lng: -4.4040489 }, // Referencia genérica
+                    { name: "Mayoral (Referencia)", address: "Zona 'Mayoral', Málaga (Cerca C. Almendrales)", lat: 36.7330292, lng: -4.3984629 }, // Referencia genérica
+                    { name: "Lingüista Manuel Seco", address: "C/ Lingüista Manuel Seco, Málaga (Limonar/Este)", lat: 36.7305471, lng: -4.3919639 },
+                    { name: "Federico Fellini", address: "C/ Federico Fellini, Málaga (Limonar/Este)", lat: 36.7275615, lng: -4.3888563 }
+                ]
+            }
+        ];
+
+        // --- Inicialización del Mapa ---
+        const map = L.map('map').setView([36.7200, -4.4200], 12); // Vista general de Málaga
+
+        // Layer para Google Maps (roadmap)
+        L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains:['mt0','mt1','mt2','mt3'],
+            attribution: '&copy; <a href="https://maps.google.com/">Google Maps</a>'
+        }).addTo(map);
+
+        // --- Elementos del DOM ---
+        const routeSelector = document.getElementById('routeSelector');
+        const locationListElement = document.getElementById('locationList');
+        const messageBox = document.getElementById('messageBox');
+        const routeNameElement = document.getElementById('routeName');
+        const routeScheduleElement = document.getElementById('routeSchedule');
+
+        let currentRouteLayerGroup = L.layerGroup().addTo(map); // Grupo para marcadores y polilínea de la ruta actual
+
+        // --- Funciones ---
+        function showMessage(text, type = 'info') {
+            messageBox.textContent = text;
+            messageBox.className = 'mt-4 p-3 text-sm text-white rounded-md'; // Reset classes
+            if (type === 'error') messageBox.classList.add('bg-red-500');
+            else if (type === 'success') messageBox.classList.add('bg-green-500');
+            else messageBox.classList.add('bg-blue-500');
+            messageBox.classList.remove('hidden');
+            setTimeout(() => messageBox.classList.add('hidden'), 3000);
+        }
+
+        function displayRoute(routeIndex) {
+            currentRouteLayerGroup.clearLayers(); // Limpiar marcadores y polilínea anteriores
+            locationListElement.innerHTML = ''; // Limpiar lista de paradas
+
+            const selectedRoute = routesData[routeIndex];
+            if (!selectedRoute) {
+                showMessage("Ruta no encontrada.", "error");
+                return;
+            }
+
+            routeNameElement.textContent = selectedRoute.name;
+            routeScheduleElement.textContent = `Horario: ${selectedRoute.schedule}`;
+
+            const latLngs = [];
+            const markers = [];
+
+            selectedRoute.stops.forEach((stop, index) => {
+                const customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<span style="line-height: 20px;">${index + 1}</span>`, // Centrar número verticalmente
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 12],
+                    style: `background-color: ${selectedRoute.color};` // Color de fondo del icono igual al de la ruta
+                });
+
+                const marker = L.marker([stop.lat, stop.lng], { icon: customIcon })
+                    .bindPopup(`<b>${index + 1}. ${stop.name}</b><br>${stop.address}<br><small>Línea: ${selectedRoute.name}</small>`);
+
+                markers.push(marker);
+                latLngs.push([stop.lat, stop.lng]);
+                currentRouteLayerGroup.addLayer(marker); // Añadir marcador al grupo
+
+                // Añadir a la lista lateral
+                const listItem = document.createElement('div');
+                listItem.className = 'location-item text-gray-700 text-sm';
+                listItem.innerHTML = `<b>${index + 1}. ${stop.name}</b><br><span class="text-xs text-gray-500">${stop.address}</span>`;
+                listItem.onclick = () => {
+                    map.setView([stop.lat, stop.lng], 16);
+                    marker.openPopup();
+                    showMessage(`Centrando en: ${stop.name}`);
+                };
+                locationListElement.appendChild(listItem);
+            });
+
+            if (latLngs.length > 1) {
+                const polyline = L.polyline(latLngs, { color: selectedRoute.color, weight: 5, opacity: 0.8 });
+                currentRouteLayerGroup.addLayer(polyline); // Añadir polilínea al grupo
+                map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+            } else if (latLngs.length === 1) {
+                map.setView(latLngs[0], 15);
+            }
+             showMessage(`Mostrando ${selectedRoute.name}.`, 'success');
+        }
+
+        // --- Inicialización y Eventos ---
+        // Poblar el selector de rutas
+        routesData.forEach((route, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = route.name;
+            routeSelector.appendChild(option);
+        });
+
+        // Evento para cambio de ruta
+        routeSelector.addEventListener('change', (event) => {
+            const selectedRouteIndex = parseInt(event.target.value);
+            displayRoute(selectedRouteIndex);
+        });
+
+        // Mostrar la primera ruta por defecto al cargar
+        if (routesData.length > 0) {
+            routeSelector.value = "0"; // Seleccionar la primera opción
+            displayRoute(0);
+        } else {
+            showMessage("No hay rutas para mostrar.", "info");
+            routeNameElement.textContent = "Sin rutas disponibles";
+            routeScheduleElement.textContent = "";
+        }
+
+
+        // Ajustes responsivos del mapa
+        window.addEventListener('resize', () => {
+            map.invalidateSize();
+            // Reajustar el zoom si hay una ruta activa
+            const currentPolyline = currentRouteLayerGroup.getLayers().find(layer => layer instanceof L.Polyline);
+            if (currentPolyline) {
+                 map.fitBounds(currentPolyline.getBounds(), { padding: [50, 50] });
+            } else if (routesData[parseInt(routeSelector.value)] && routesData[parseInt(routeSelector.value)].stops.length > 0){
+                 // Si no hay polilínea pero sí paradas (ej. una sola parada)
+                 map.setView(routesData[parseInt(routeSelector.value)].stops[0], 15);
+            }
+        });
+
+    </script>
+</body>
+</html>
