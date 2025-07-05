@@ -250,7 +250,7 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        .custom-div-icon:hover {
+                .custom-div-icon:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2), 0 3px 12px rgba(0, 0, 0, 0.15);
         }
@@ -466,9 +466,9 @@
                 route.stops.forEach((stop, index) => {
                     const customIcon = L.divIcon({
                         className: 'custom-div-icon',
-                        html: `<span style="line-height: 32px;">${index + 1}</span>`,
-                        iconSize: [32, 32],
-                        iconAnchor: [16, 16],
+                        html: `<span style="line-height: 16px;">●</span>`,
+                        iconSize: [16, 16],
+                        iconAnchor: [8, 8],
                         style: `background-color: ${route.color};`
                     });
 
